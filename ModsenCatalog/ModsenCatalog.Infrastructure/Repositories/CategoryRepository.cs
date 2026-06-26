@@ -10,14 +10,14 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
     }
 
-    public Category GetByName(string name)
+    public async Task<Category> GetByNameAsync(string name)
     {
         var filter = Builders<Category>.Filter.Eq(c => c.Name, name);
-        return _collection.Find(filter).FirstOrDefault();
+        return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 
-    public List<Category> GetCategoriesWithProducts()
+    public async Task<List<Category>> GetCategoriesWithProductsAsync()
     {
-        return _collection.Find(_ => true).ToList();
+        return await _collection.Find(_ => true).ToListAsync();
     }
 }

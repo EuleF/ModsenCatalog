@@ -4,19 +4,19 @@ namespace ModsenCatalog.Application.Interfaces;
 
 public interface IReviewRepository : IRepository<Review>
 {
-    List<Review> GetByProductId(Guid productId);
+    Task<List<Review>> GetByProductIdAsync(Guid productId);
 
-    List<Review> GetByUserId(Guid userId);
+    Task<List<Review>> GetByUserIdAsync(Guid userId);
 
-    Review GetByUserAndProduct(Guid userId, Guid productId);
+    Task<Review> GetByUserAndProductAsync(Guid userId, Guid productId);
 
-    List<Review> GetByRating(int rating);
+    Task<List<Review>> GetByRatingAsync(int rating);
         
-    float GetAverageRatingForProduct(Guid productId);
+    Task<float> GetAverageRatingForProductAsync(Guid productId);
         
-    List<Review> GetRecentReviews(int count);
+    Task<List<Review>> GetRecentReviewsAsync(int count);
 
-    void DeleteByUserId(Guid userId);
+    Task DeleteByUserIdAsync(Guid userId);
         
-    void DeleteByProductId(Guid productId);
+    Task DeleteByProductIdAsync(Guid productId);
 }

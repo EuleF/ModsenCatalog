@@ -4,7 +4,7 @@ namespace ModsenCatalog.Application.Interfaces;
 
 public interface ICategoryRepository : IRepository<Category>
 {
-    Category GetByName(string name);
+    Task<Category> GetByNameAsync(string name);
     
-    List<Category> GetCategoriesWithProducts();
+    Task<List<Category>> GetCategoriesWithProductsAsync();
 }

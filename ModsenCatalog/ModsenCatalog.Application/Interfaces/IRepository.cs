@@ -4,15 +4,15 @@ namespace ModsenCatalog.Application.Interfaces;
 
 public interface IRepository<T> where T : class
 {
-    T GetById(Guid id);
+    Task<T> GetByIdAsync(Guid id);
 
-    List<T> GetAll();
+    Task<List<T>> GetAllAsync();
 
-    List<T> Find(Expression<Func<T, bool>> filter);
+    Task<List<T>> FindAsync(Expression<Func<T, bool>> filter);
 
-    void Create(T entity);
+    Task CreateAsync(T entity);
 
-    void Update(T entity);
+    Task UpdateAsync(T entity);
 
-    void Delete(Guid id);
+    Task DeleteAsync(Guid id);
 }
