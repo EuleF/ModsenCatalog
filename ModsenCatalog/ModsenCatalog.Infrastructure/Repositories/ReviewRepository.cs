@@ -10,40 +10,40 @@ public class ReviewRepository : BaseRepository<Review>, IReviewRepository
     {
     }
 
-    public List<Review> GetByProductId(Guid productId)
+    public async Task<List<Review>> GetByProductIdAsync(Guid productId)
     {
         var filter = Builders<Review>.Filter.Eq(r => r.ProductId, productId);
         
-        return _collection.Find(filter).ToList();
+        return await _collection.Find(filter).ToListAsync();
     }
 
-    public List<Review> GetByUserId(Guid userId)
+    public async Task<List<Review>> GetByUserIdAsync(Guid userId)
     {
         var filter = Builders<Review>.Filter.Eq(r => r.UserId, userId);
         
-        return _collection.Find(filter).ToList();
+        return await _collection.Find(filter).ToListAsync();
     }
 
-    public Review GetByUserAndProduct(Guid userId, Guid productId)
+    public async Task<Review> GetByUserAndProductAsync(Guid userId, Guid productId)
     {
         var filter = Builders<Review>.Filter.And(
             Builders<Review>.Filter.Eq(r => r.UserId, userId),
             Builders<Review>.Filter.Eq(r => r.ProductId, productId)
         );
         
-        return _collection.Find(filter).FirstOrDefault();
+        return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 
-    public List<Review> GetByRating(int rating)
+    public async Task<List<Review>> GetByRatingAsync(int rating)
     {
         var filter = Builders<Review>.Filter.Eq(r => r.Rating, rating);
         
-        return _collection.Find(filter).ToList();
+        return await _collection.Find(filter).ToListAsync();
     }
 
-    public float GetAverageRatingForProduct(Guid productId)
+    public async Task<float> GetAverageRatingForProductAsync(Guid productId)
     {
-        var reviews = GetByProductId(productId);
+        var reviews = await GetByProductIdAsync(productId);
         
         if (!reviews.Any())
         {
@@ -53,27 +53,27 @@ public class ReviewRepository : BaseRepository<Review>, IReviewRepository
         return (float)Math.Round(reviews.Average(r => r.Rating), 2);
     }
 
-    public List<Review> GetRecentReviews(int count)
+    public async Task<List<Review>> GetRecentReviewsAsync(int count)
     {
         var sort = Builders<Review>.Sort.Descending(r => r.CreatedAt);
         
-        return _collection.Find(_ => true)
+        return await _collection.Find(_ => true)
             .Sort(sort)
             .Limit(count)
-            .ToList();
+            .ToListAsync();
     }
 
-    public void DeleteByUserId(Guid userId)
+    public async Task DeleteByUserIdAsync(Guid userId)
     {
         var filter = Builders<Review>.Filter.Eq(r => r.UserId, userId);
         
-        _collection.DeleteMany(filter);
+        await _collection.DeleteManyAsync(filter);
     }
 
-    public void DeleteByProductId(Guid productId)
+    public async Task DeleteByProductIdAsync(Guid productId)
     {
         var filter = Builders<Review>.Filter.Eq(r => r.ProductId, productId);
         
-        _collection.DeleteMany(filter);
+        await _collection.DeleteManyAsync(filter);
     }
 }

@@ -4,15 +4,15 @@ namespace ModsenCatalog.Application.Interfaces;
 
 public interface IProductRepository : IRepository<Product>
 {
-    List<Product> GetByCategoryId(Guid categoryId);
+    Task<List<Product>> GetByCategoryIdAsync(Guid categoryId);
 
-    List<Product> GetByPriceRange(decimal minPrice, decimal maxPrice);
+    Task<List<Product>> GetByPriceRangeAsync(decimal minPrice, decimal maxPrice);
 
-    List<Product> GetTopRatedProducts(int count);
+    Task<List<Product>> GetTopRatedProductsAsync(int count);
 
-    List<Product> Search(string searchTerm);
+    Task<List<Product>> SearchAsync(string searchTerm);
 
-    List<Product> GetPaged(int page, int pageSize);
+    Task<List<Product>> GetPagedAsync(int page, int pageSize);
         
-    float GetAverageRating(Guid productId);
+    Task<float> GetAverageRatingAsync(Guid productId);
 }

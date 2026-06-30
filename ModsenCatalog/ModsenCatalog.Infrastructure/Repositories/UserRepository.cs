@@ -11,25 +11,25 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     {
     }
 
-    public User GetByUsername(string username)
+    public async Task<User> GetByUsernameAsync(string username)
     {
         var filter = Builders<User>.Filter.Eq(u => u.Username, username);
         
-        return _collection.Find(filter).FirstOrDefault();
+        return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 
-    public User GetByEmail(string email)
+    public async Task<User> GetByEmailAsync(string email)
     {
         var filter = Builders<User>.Filter.Eq(u => u.Email, email);
         
-        return _collection.Find(filter).FirstOrDefault();
+        return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 
-    public List<User> GetByRole(string role)
+    public async Task<List<User>> GetByRoleAsync(string role)
     {
         var roleEnum = Enum.Parse<UserRole>(role, true);
         var filter = Builders<User>.Filter.Eq(u => u.Role, roleEnum);
         
-        return _collection.Find(filter).ToList();
+        return await _collection.Find(filter).ToListAsync();
     }
 }

@@ -10,57 +10,57 @@ public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
     }
 
-    public List<Product> GetByCategoryId(Guid categoryId)
+    public async Task<List<Product>> GetByCategoryIdAsync(Guid categoryId)
     {
         var filter = Builders<Product>.Filter.Eq(p => p.CategoryId, categoryId);
         
-        return _collection.Find(filter).ToList();
+        return await _collection.Find(filter).ToListAsync();
     }
 
-    public List<Product> GetByPriceRange(decimal minPrice, decimal maxPrice)
+    public async Task<List<Product>> GetByPriceRangeAsync(decimal minPrice, decimal maxPrice)
     {
         var filter = Builders<Product>.Filter.And(
             Builders<Product>.Filter.Gte(p => p.Price, minPrice),
             Builders<Product>.Filter.Lte(p => p.Price, maxPrice)
         );
         
-        return _collection.Find(filter).ToList();
+        return await _collection.Find(filter).ToListAsync();
     }
 
-    public List<Product> GetTopRatedProducts(int count)
+    public async Task<List<Product>> GetTopRatedProductsAsync(int count)
     {
         var sort = Builders<Product>.Sort.Descending(p => p.AverageRating);
         
-        return _collection.Find(_ => true)
+        return await _collection.Find(_ => true)
             .Sort(sort)
             .Limit(count)
-            .ToList();
+            .ToListAsync();
     }
 
-    public List<Product> Search(string searchTerm)
+    public async Task<List<Product>> SearchAsync(string searchTerm)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
-            return GetAll();
+            return await GetAllAsync();
 
         var filter = Builders<Product>.Filter.Or(
             Builders<Product>.Filter.Regex(p => p.Name, new MongoDB.Bson.BsonRegularExpression(searchTerm, "i")),
             Builders<Product>.Filter.Regex(p => p.Description, new MongoDB.Bson.BsonRegularExpression(searchTerm, "i"))
         );
         
-        return _collection.Find(filter).ToList();
+        return await _collection.Find(filter).ToListAsync();
     }
 
-    public List<Product> GetPaged(int page, int pageSize)
+    public async Task<List<Product>> GetPagedAsync(int page, int pageSize)
     {
-        return _collection.Find(_ => true)
+        return await _collection.Find(_ => true)
             .Skip((page - 1) * pageSize)
             .Limit(pageSize)
-            .ToList();
+            .ToListAsync();
     }
 
-    public float GetAverageRating(Guid productId)
+    public async Task<float> GetAverageRatingAsync(Guid productId)
     {
-        var product = GetById(productId);
+        var product = await GetByIdAsync(productId);
         return product?.AverageRating ?? 0;
     }
 }

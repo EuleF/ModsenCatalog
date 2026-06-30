@@ -4,9 +4,9 @@ namespace ModsenCatalog.Application.Interfaces;
 
 public interface IUserRepository : IRepository<User>
 {
-    User GetByUsername(string username);
+    Task<User> GetByUsernameAsync(string username);
     
-    User GetByEmail(string email);
+    Task<User> GetByEmailAsync(string email);
     
-    List<User> GetByRole(string role);
+    Task<List<User>> GetByRoleAsync(string role);
 }

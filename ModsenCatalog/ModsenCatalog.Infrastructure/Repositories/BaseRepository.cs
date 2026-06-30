@@ -13,40 +13,40 @@ public abstract class BaseRepository<T> : IRepository<T> where T : class
         _collection = collection;
     }
 
-    public virtual T GetById(Guid id)
+    public virtual async Task<T> GetByIdAsync(Guid id)
     {
         var filter = Builders<T>.Filter.Eq("Id", id);
         
-        return _collection.Find(filter).FirstOrDefault();
+        return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 
-    public virtual List<T> GetAll()
+    public virtual async Task<List<T>> GetAllAsync()
     {
-        return _collection.Find(_ => true).ToList();
+        return await _collection.Find(_ => true).ToListAsync();
     }
 
-    public virtual List<T> Find(Expression<Func<T, bool>> filter)
+    public virtual async Task<List<T>> FindAsync(Expression<Func<T, bool>> filter)
     {
-        return _collection.Find(filter).ToList();
+        return await _collection.Find(filter).ToListAsync();
     }
 
-    public virtual void Create(T entity)
+    public virtual async Task CreateAsync(T entity)
     {
-        _collection.InsertOne(entity);
+        await _collection.InsertOneAsync(entity);
     }
 
-    public virtual void Update(T entity)
+    public virtual async Task UpdateAsync(T entity)
     {
         var filter = Builders<T>.Filter.Eq("Id", GetIdValue(entity));
         
-        _collection.ReplaceOne(filter, entity);
+        await _collection.ReplaceOneAsync(filter, entity);
     }
 
-    public virtual void Delete(Guid id)
+    public virtual async Task DeleteAsync(Guid id)
     {
         var filter = Builders<T>.Filter.Eq("Id", id);
         
-        _collection.DeleteOne(filter);
+        await _collection.DeleteOneAsync(filter);
     }
 
     private object? GetIdValue(T entity)

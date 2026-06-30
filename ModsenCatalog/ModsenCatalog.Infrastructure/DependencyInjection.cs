@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ModsenCatalog.Application.Handlers;
 using MongoDB.Driver;
 using ModsenCatalog.Application.Interfaces;
 using ModsenCatalog.Domain.Entities;
 using ModsenCatalog.Infrastructure.Data;
+using ModsenCatalog.Infrastructure.Events;
 using ModsenCatalog.Infrastructure.Options;
 using ModsenCatalog.Infrastructure.Repositories;
 
@@ -54,6 +56,9 @@ public static class DependencyInjection
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
+        
+        services.AddSingleton<IEventPublisher, EventPublisher>();
+        services.AddSingleton<EventHandlerService>();
 
         return services;
     }
